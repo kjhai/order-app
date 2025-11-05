@@ -3,8 +3,10 @@ import './App.css'
 import Header from './components/Header'
 import MenuCard from './components/MenuCard'
 import ShoppingCart from './components/ShoppingCart'
+import Admin from './components/Admin'
 
 function App() {
+  const [currentPage, setCurrentPage] = useState('order') // 'order' or 'admin'
   // 메뉴 데이터
   const menuItems = [
     {
@@ -124,26 +126,32 @@ function App() {
 
   return (
     <div className="App">
-      <Header />
-      <div className="menu-section">
-        <div className="menu-grid">
-          {menuItems.map(item => (
-            <MenuCard
-              key={item.id}
-              menuItem={item}
-              options={options}
-              onAddToCart={addToCart}
-            />
-          ))}
-        </div>
-      </div>
-      <ShoppingCart
-        cart={cart}
-        total={calculateTotal()}
-        onRemove={removeFromCart}
-        onUpdateQuantity={updateQuantity}
-        onOrder={handleOrder}
-      />
+      <Header currentPage={currentPage} onPageChange={setCurrentPage} />
+      {currentPage === 'order' ? (
+        <>
+          <div className="menu-section">
+            <div className="menu-grid">
+              {menuItems.map(item => (
+                <MenuCard
+                  key={item.id}
+                  menuItem={item}
+                  options={options}
+                  onAddToCart={addToCart}
+                />
+              ))}
+            </div>
+          </div>
+          <ShoppingCart
+            cart={cart}
+            total={calculateTotal()}
+            onRemove={removeFromCart}
+            onUpdateQuantity={updateQuantity}
+            onOrder={handleOrder}
+          />
+        </>
+      ) : (
+        <Admin />
+      )}
     </div>
   )
 }
