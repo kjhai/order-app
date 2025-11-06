@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import './Admin.css'
 import AdminDashboard from './AdminDashboard'
 import InventoryStatus from './InventoryStatus'
@@ -17,11 +17,11 @@ function Admin() {
     {
       id: 1,
       orderNumber: 'ORD-001',
-      date: new Date(2024, 6, 31, 13, 0), // 7월 31일 13:00
+      date: new Date(), // 현재 날짜/시간 사용
       items: [
         { menuName: '아메리카노(ICE)', quantity: 1, price: 4000 }
       ],
-      status: 'received', // 'received', 'preparing', 'completed'
+      status: 'pending', // 'pending': 주문 접수 대기, 'received': 주문 접수, 'preparing': 제조 중, 'completed': 제조 완료
       totalAmount: 4000
     }
   ])

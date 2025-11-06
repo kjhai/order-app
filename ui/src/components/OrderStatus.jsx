@@ -13,6 +13,8 @@ function OrderStatus({ orders, onStatusChange }) {
   // 주문 상태에 따른 버튼 텍스트 및 다음 상태 반환
   const getStatusButton = (status) => {
     switch (status) {
+      case 'pending':
+        return { text: '주문 접수', nextStatus: 'received' }
       case 'received':
         return { text: '제조 시작', nextStatus: 'preparing' }
       case 'preparing':
