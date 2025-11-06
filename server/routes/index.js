@@ -1,16 +1,23 @@
 import express from 'express';
+import * as menuController from '../controllers/menuController.js';
+import * as optionController from '../controllers/optionController.js';
+import * as orderController from '../controllers/orderController.js';
 
 const router = express.Router();
 
-// 라우터들을 여기에 추가할 예정
-// import menusRouter from './menus.js';
-// import optionsRouter from './options.js';
-// import ordersRouter from './orders.js';
+// 메뉴 관련 라우트
+router.get('/menus', menuController.getMenus);
+router.get('/menus/:id', menuController.getMenuById);
+router.patch('/menus/:id/stock', menuController.updateStock);
 
-// router.use('/menus', menusRouter);
-// router.use('/options', optionsRouter);
-// router.use('/orders', ordersRouter);
+// 옵션 관련 라우트
+router.get('/options', optionController.getOptions);
+
+// 주문 관련 라우트
+router.get('/orders', orderController.getOrders);
+router.get('/orders/stats', orderController.getOrderStats);
+router.get('/orders/:id', orderController.getOrderById);
+router.post('/orders', orderController.createOrder);
+router.patch('/orders/:id/status', orderController.updateOrderStatus);
 
 export default router;
-
-

@@ -48,7 +48,12 @@ function OrderStatus({ orders, onStatusChange }) {
                   <div className="order-items">
                     {order.items.map((item, index) => (
                       <div key={index} className="order-item-detail">
-                        {item.menuName} x {item.quantity}
+                        {item.menu_name} x {item.quantity}
+                        {item.options && item.options.length > 0 && (
+                          <span className="order-options">
+                            ({item.options.map(opt => opt.name).join(', ')})
+                          </span>
+                        )}
                       </div>
                     ))}
                   </div>

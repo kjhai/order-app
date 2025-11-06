@@ -12,10 +12,10 @@ function InventoryStatus({ inventory, onIncrease, onDecrease }) {
     <div className="inventory-status">
       <h2 className="section-title">재고 현황</h2>
       <div className="inventory-grid">
-        {Object.entries(inventory).map(([menuId, item]) => {
+        {inventory.map((item) => {
           const status = getStockStatus(item.stock)
           return (
-            <div key={menuId} className="inventory-card">
+            <div key={item.id} className="inventory-card">
               <div className="inventory-menu-name">{item.name}</div>
               <div className="inventory-stock-info">
                 <span className="inventory-stock-count">{item.stock}개</span>
@@ -26,13 +26,13 @@ function InventoryStatus({ inventory, onIncrease, onDecrease }) {
               <div className="inventory-controls">
                 <button 
                   className="inventory-button inventory-button-minus"
-                  onClick={() => onDecrease(parseInt(menuId))}
+                  onClick={() => onDecrease(item.id)}
                 >
                   -
                 </button>
                 <button 
                   className="inventory-button inventory-button-plus"
-                  onClick={() => onIncrease(parseInt(menuId))}
+                  onClick={() => onIncrease(item.id)}
                 >
                   +
                 </button>

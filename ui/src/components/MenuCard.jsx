@@ -1,9 +1,26 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './MenuCard.css'
+import { api } from '../api'
 
 function MenuCard({ menuItem, options, onAddToCart }) {
   const [selectedOptions, setSelectedOptions] = useState([])
   const [imageError, setImageError] = useState(false)
+  const [menuOptions, setMenuOptions] = useState([])
+
+  // 메뉴별 옵션 로드
+  useEffect(() => {
+    const loadOptions = async () => {
+      try {
+        const opts = await api.getOptions(menuItem.id)
+        setMenuOptions(opts.map(opt => ({ id: opt.id, name: opt.name, price: opt.price })))
+      } catch (error) {
+        console.error('옵션 로드 실패:', error)
+        // 기본 옵션 사용
+        setMenuOptions(options)
+      }
+    }
+    loadOptions()
+  }, [menuItem.id])
 
   const handleOptionChange = (option, checked) => {
     if (checked) {
@@ -45,7 +62,7 @@ function MenuCard({ menuItem, options, onAddToCart }) {
         <p className="menu-description">{menuItem.description}</p>
       </div>
       <div className="menu-options">
-        {options.map(option => (
+        {menuOptions.map(option => (
           <label key={option.id} className="option-label">
             <input
               type="checkbox"
