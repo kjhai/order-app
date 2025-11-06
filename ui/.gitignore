@@ -12,6 +12,14 @@ dist
 dist-ssr
 *.local
 
+# Environment variables (Git에 커밋하지 않음)
+.env
+.env.local
+.env.production
+.env.production.local
+.env.development
+.env.development.local
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

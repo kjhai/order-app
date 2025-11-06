@@ -7,6 +7,22 @@ export default defineConfig({
   server: {
     port: 5173,
     open: true
-  }
+  },
+  build: {
+    outDir: 'dist',
+    assetsDir: 'assets',
+    sourcemap: false,
+    // 빌드 최적화
+    minify: 'esbuild',
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom']
+        }
+      }
+    }
+  },
+  // 환경 변수 접두사
+  envPrefix: 'VITE_'
 })
 
