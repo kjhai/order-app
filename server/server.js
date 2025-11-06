@@ -52,8 +52,12 @@ app.use((err, req, res, next) => {
 const server = app.listen(PORT, async () => {
   console.log(`서버가 http://localhost:${PORT} 에서 실행 중입니다.`);
   
-  // 데이터베이스 연결 테스트
-  await testConnection();
+  // 데이터베이스 연결 테스트 (실패해도 서버는 계속 실행)
+  try {
+    await testConnection();
+  } catch (error) {
+    console.warn('⚠️  데이터베이스 연결 테스트 실패 (서버는 계속 실행됩니다):', error.message);
+  }
 });
 
 // 서버 종료 시 데이터베이스 연결 정리

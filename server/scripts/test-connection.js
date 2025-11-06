@@ -17,14 +17,21 @@ if (existsSync(envPath)) {
 
 const { Client } = pg;
 
+// Render PostgreSQL은 SSL 연결이 필요합니다
+const isProduction = process.env.NODE_ENV === 'production' || process.env.DB_HOST?.includes('render.com');
+
 // 간단한 연결 테스트
 async function testConnection() {
   const client = new Client({
     host: process.env.DB_HOST || 'localhost',
     port: parseInt(process.env.DB_PORT || '5432'),
-    database: 'postgres',
+    database: process.env.DB_NAME || 'postgres',
     user: process.env.DB_USER || 'postgres',
     password: process.env.DB_PASSWORD || '',
+    ssl: isProduction ? {
+      rejectUnauthorized: false // Render PostgreSQL의 경우
+    } : false,
+    connectionTimeoutMillis: 10000, // Render는 더 긴 시간 필요
   });
 
   console.log('PostgreSQL 연결 테스트 중...');

@@ -5,6 +5,9 @@ dotenv.config();
 
 const { Pool } = pg;
 
+// Render PostgreSQL은 SSL 연결이 필요합니다
+const isProduction = process.env.NODE_ENV === 'production' || process.env.DB_HOST?.includes('render.com');
+
 // PostgreSQL 연결 풀 생성
 const pool = new Pool({
   host: process.env.DB_HOST || 'localhost',
@@ -14,7 +17,10 @@ const pool = new Pool({
   password: process.env.DB_PASSWORD || '',
   max: 20, // 최대 연결 수
   idleTimeoutMillis: 30000, // 유휴 연결 타임아웃
-  connectionTimeoutMillis: 2000, // 연결 타임아웃
+  connectionTimeoutMillis: 10000, // 연결 타임아웃 (Render는 더 긴 시간 필요)
+  ssl: isProduction ? {
+    rejectUnauthorized: false // Render PostgreSQL의 경우
+  } : false,
 });
 
 // 연결 이벤트 핸들러
