@@ -12,6 +12,8 @@
     "db:tables": "node scripts/create-tables.js",
     "db:seed": "node scripts/seed-data.js",
     "db:update-images": "node scripts/update-images.js",
+    "db:init": "node scripts/init-db.js",
+    "postinstall": "node scripts/init-db.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [

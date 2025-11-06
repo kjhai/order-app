@@ -1,0 +1,53 @@
+# Render.com 배포 설정 파일
+
+services:
+  # 백엔드 서비스 (Express API)
+  - type: web
+    name: order-app-backend
+    env: node
+    plan: free
+    buildCommand: cd server && npm install
+    startCommand: cd server && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: DB_HOST
+        fromDatabase:
+          name: order-app-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: order-app-db
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: order-app-db
+          property: database
+      - key: DB_USER
+        fromDatabase:
+          name: order-app-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: order-app-db
+          property: password
+
+  # 프런트엔드 서비스 (Static Site)
+  - type: web
+    name: order-app-frontend
+    env: static
+    buildCommand: cd ui && npm install && npm run build
+    staticPublishPath: ui/dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://order-app-backend.onrender.com/api
+
+  # PostgreSQL 데이터베이스
+  - type: pspg
+    name: order-app-db
+    plan: free
+    databaseName: order_app
+    user: order_app_user
+
