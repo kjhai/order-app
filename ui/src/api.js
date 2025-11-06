@@ -1,6 +1,10 @@
 // API 기본 URL (환경 변수 또는 기본값 사용)
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
 
+// 디버깅: 환경 변수 확인 (프로덕션에서도 표시)
+console.log('🔍 API Base URL:', API_BASE_URL);
+console.log('🔍 VITE_API_URL:', import.meta.env.VITE_API_URL || '(설정되지 않음)');
+
 // API 클라이언트 함수들
 export const api = {
   // 메뉴 관련 API
@@ -8,12 +12,22 @@ export const api = {
     const url = includeStock 
       ? `${API_BASE_URL}/menus?include_stock=true`
       : `${API_BASE_URL}/menus`;
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error('메뉴 조회 실패');
+    
+    console.log('Fetching menus from:', url);
+    
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('메뉴 조회 실패:', response.status, errorText);
+        throw new Error(`메뉴 조회 실패 (${response.status}): ${errorText}`);
+      }
+      const data = await response.json();
+      return data.menus;
+    } catch (error) {
+      console.error('메뉴 조회 네트워크 오류:', error);
+      throw new Error(`API 호출 실패: ${error.message}. API URL: ${API_BASE_URL}`);
     }
-    const data = await response.json();
-    return data.menus;
   },
 
   // 옵션 관련 API

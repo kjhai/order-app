@@ -17,15 +17,20 @@ function App() {
     const loadData = async () => {
       try {
         setLoading(true)
+        console.log('데이터 로드 시작...');
+        console.log('API URL:', import.meta.env.VITE_API_URL || 'http://localhost:3000/api');
+        
         const [menus, opts] = await Promise.all([
           api.getMenus(),
           api.getOptions()
         ])
         setMenuItems(menus)
         setOptions(opts.map(opt => ({ id: opt.id, name: opt.name, price: opt.price })))
+        console.log('데이터 로드 성공:', { menus: menus.length, options: opts.length });
       } catch (error) {
         console.error('데이터 로드 실패:', error)
-        alert('데이터를 불러오는데 실패했습니다.')
+        const errorMessage = error.message || '데이터를 불러오는데 실패했습니다.';
+        alert(`${errorMessage}\n\nAPI URL: ${import.meta.env.VITE_API_URL || '설정되지 않음'}\n\n브라우저 콘솔(F12)에서 자세한 오류를 확인하세요.`)
       } finally {
         setLoading(false)
       }
